@@ -33,11 +33,11 @@
         this.displayScore(sc);
     }
 
-Question.prototype.displayScore = function(score)
-{
-    console.log('Your current score is: ' + score);
-    console.log('-----------------------------------');
-}
+    Question.prototype.displayScore = function(score)
+    {
+        console.log('Your current score is: ' + score);
+        console.log('-----------------------------------');
+    }
 
     var question1 = new Question('What is the largest water body?', ['Atlantic', 'Pacific', 'Indian'], 1);
     var question2 = new Question('President of US?', ['Trump', 'Obama', 'George'], 0);
