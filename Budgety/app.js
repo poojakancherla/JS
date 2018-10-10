@@ -102,6 +102,20 @@ var UIController = (function()
             
         },
 
+        clearFields: function() {
+            var fields, fieldsArr;
+            
+            fields = document.querySelectorAll(DOMstrings.inputDescription + ', ' + DOMstrings.inputValue);
+            
+            fieldsArr = Array.prototype.slice.call(fields);
+            
+            fieldsArr.forEach(function(current, index, array) {
+                current.value = "";
+            });
+            
+            fieldsArr[0].focus();
+        },
+
         getDOMstrings: function()
         {
             return DOMstrings;
@@ -126,19 +140,50 @@ var controller = (function(budgetCtrl, UICtrl)
             });
     };
 
-
+    var updateBudget = function() {
+        
+        // 1. Calculate the budget
+        budgetCtrl.calculateBudget();
+        
+        // 2. Return the budget
+        var budget = budgetCtrl.getBudget();
+        
+        // 3. Display the budget on the UI
+        UICtrl.displayBudget(budget);
+    };
+    
+    
+    var updatePercentages = function() {
+        
+        // 1. Calculate percentages
+        budgetCtrl.calculatePercentages();
+        
+        // 2. Read percentages from the budget controller
+        var percentages = budgetCtrl.getPercentages();
+        
+        // 3. Update the UI with the new percentages
+        UICtrl.displayPercentages(percentages);
+    };
     
     var ctrlAddItem = function()
     {
         var input, newItem;
         // 1. Get the field input data
         input = UICtrl.getInput();
+
+        if (input.description !== "" && !isNaN(input.value) && input.value > 0)
+        {
         // 2. Add the item to the budget controller
         newItem = budgetCtrl.addItem(input.type, input.description, input.value);
         // 3. Add the item to the UI
         UICtrl.addItemList(newItem, input.type);
-        // 4. Calculate the budget
-        // 5. Display the budget on the UI
+        // 4. Clear the fields
+        UICtrl.clearFields();
+        // 5. Calculate and update the budget
+        updateBudget();        
+        // 6. Calculate and update the percentages
+        updatePercentages();
+        }
     };
 
     return{
